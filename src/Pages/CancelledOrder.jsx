@@ -1,16 +1,14 @@
 import React from 'react'
 import Navbar from "../Components/Navbar.jsx"
 import OrderNav from "../Components/OrderNav.jsx"
-const Home = () => {
+const CancelledOrder = () => {
   return (
     <>
     <Navbar />
-    <OrderNav/>
-    <div>
-      Pending
-    </div>
-    </>
+    <OrderNav />
+    <div>CancelledOrder</div>
+  </>
   )
 }
 
-export default Home
+export default CancelledOrder
