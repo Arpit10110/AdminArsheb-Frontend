@@ -14,9 +14,9 @@ const PandingOrders = () => {
         }
     }
 
-
+// mann nhi hai aaj
     useEffect(() => {
-    //  pendingdata();
+     pendingdata();
     }, [])
     
   return (
