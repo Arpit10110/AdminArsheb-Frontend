@@ -2,6 +2,7 @@ import React from 'react'
 import {HashRouter as Router , Routes , Route} from "react-router-dom"
 import Home from "./Pages/Home.jsx"
 import Product from "./Pages/Product.jsx"
+import ADDProduct from "./Pages/ADDProduct.jsx"
 import CompletedOrder from "./Pages/CompletedOrder.jsx"
 import CancelledOrder from "./Pages/CancelledOrder.jsx"
 const App = () => {
@@ -12,6 +13,7 @@ const App = () => {
         <Route path='/completed-order' element={<CompletedOrder/>}  />
         <Route path='/cancelled-order' element={<CancelledOrder/>}  />
         <Route path='/allproduct' element={<Product/>}  />
+        <Route path='/addproduct' element={<ADDProduct/>}  />
       </Routes>
     </Router>
   )
