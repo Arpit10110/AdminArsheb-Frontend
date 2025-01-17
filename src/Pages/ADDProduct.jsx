@@ -44,5 +44,3 @@ const ADDProduct = () => {
 
 
 export default ADDProduct
-
-// aaj man nhi kar raha hai bhai kuch because kal exma hai brooooo
