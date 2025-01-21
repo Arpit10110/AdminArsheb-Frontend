@@ -40,7 +40,6 @@ const ADDProduct = () => {
     </>
   )
 }
-// aaj maan nahi  hai kal exam hai bhai....
 
 
 export default ADDProduct
