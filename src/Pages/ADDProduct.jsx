@@ -40,6 +40,5 @@ const ADDProduct = () => {
     </>
   )
 }
-// dsl: true
 
 export default ADDProduct
