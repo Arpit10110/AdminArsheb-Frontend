@@ -1,40 +1,91 @@
 import React, { useState } from 'react'
 import ProdNav from '../Components/ProdNav'
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
+import axios from "axios"
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 const ADDProduct = () => {
-    const [age, setAge] = useState('jewellery');
+  const [open, setOpen] = useState(false);
+    const [Producttitle, SetProducttitle] = useState('');
+    const [ProductPrice, SetProductPrice] = useState('');
+    const [ProductDesc, SetProductDesc] = useState('');
+    const [Producttype, SetProducttype] = useState('');
+    const [ProductImage,SetProductImage] = useState([]);
+    const validationCheck = (e)=>{
+      e.preventDefault();
+      console.log(Producttitle);
+      console.log(ProductPrice);
+      console.log(Producttype);
+      console.log(ProductImage);
+      console.log(ProductDesc);
+    }
 
-    const handleChange = (event) => {
-      setAge(event.target.value);
-    };
+    const UpladImage = async(e)=>{
+      setOpen(true);
+      try {
+        const Image=e.target.files[0];
+        const data = new FormData();
+        data.append("file",Image);
+        data.append("upload_preset","arsheb");
+        data.append("cloud_name","dblybkghe");
+        console.log("this is "+data)
+        const res = await axios.post("https://api.cloudinary.com/v1_1/dblybkghe/image/upload",data)
+        setOpen(false);
+        alert("--Image Uploaded---")
+        const imageurl = res.data.secure_url;
+        SetProductImage([...ProductImage, imageurl])
+      } catch (error) {
+        setOpen(false);
+        console.log(error)
+      }
+  
+    }
+    
   return (
     <>
+      <Backdrop
+        sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+        open={open}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
      <ProdNav/>
-     <div >
-        <form action="">
-            <div>
+     <div className='w-full flex justify-center items-center'  >
+        <form onSubmit={validationCheck}  className='w-[50%] bg-gray-900 rounded-md mt-[5rem] flex flex-col gap-[1rem] text-[1.5rem] p-[1rem] ' >
+            <div className='w-full' >
                 <h1>Title</h1>
-                <input type="text" required/>
+                <input onChange={(e)=>{SetProducttitle(e.target.value)}} className='w-full p-[0.3rem] rounded-md bg-[#ffffff3b] text-white border-none focus:outline-none  '  type="text" required/>
             </div>
-            <div>
+            <div className='w-full'>
                 <h1>Price</h1>
-                <input type="text" required/>
+                <input onChange={(e)=>{SetProductPrice(e.target.value)}} className='w-full p-[0.3rem] rounded-md bg-[#ffffff3b] text-white border-none focus:outline-none  ' type="text" required/>
             </div>
-            <div>
+            <div className='w-full flex gap-[2rem] '>
                 <h1>Product Type</h1>
-                <Select        labelId="demo-simple-select-autowidth-label"
-          id="demo-simple-select-autowidth"  value={age} onChange={handleChange} >
-                    <MenuItem value={"jewellery"}>Jewellery</MenuItem>
-                    <MenuItem value={"mens"}>Men's</MenuItem>
-                    <MenuItem value={"womens"}>Women's</MenuItem>
-                    <MenuItem value={"footwear"}>Footwear</MenuItem>
-                    <MenuItem value={"bags"}>Bag's</MenuItem>
-                    <MenuItem value={"hairacc"}>Hair Accessories</MenuItem>
-                </Select>
+                <select className=' p-[0.3rem] rounded-md text-white bg-gray-600  focus:outline-none ' name='producttype' onChange={(e)=>{
+                  SetProducttype(e.target.value);
+                }}  required>
+                  <option value=""  >--Select Product Type--</option>
+                  <option value="Jewellery" >Jewellery</option>
+                  <option value="mens">Men's</option>
+                  <option value="womens">Women's</option>
+                  <option value="footwear">footwear</option>
+                  <option value="bags">bags</option>
+                  <option value="hairacc">Hair Accessories</option>
+                </select>
             </div>
-
+            <div className='w-full'>
+               <h1>Product Desc</h1>
+               <textarea onChange={(e)=>{SetProductDesc(e.target.value)}}  className='w-full h-[15vh] p-[0.3rem] rounded-md bg-[#ffffff3b] text-white border-none focus:outline-none  ' type="text" required/>
+            </div>
+            <div className='w-full flex gap-[2rem] '>
+               <h1>Product Image</h1>
+               <input onChange={UpladImage}   type="file" required/>
+            </div>
+            <div className='w-full flex gap-[2rem] '>
+               <h1>Product Image</h1>
+               <input onChange={UpladImage}   type="file" required/>
+            </div>
+              <button className='m-auto bg-black text-white px-[1rem] py-[0.5rem] rounded-md ' >Add the product</button>
         </form>
      </div>
     </>
