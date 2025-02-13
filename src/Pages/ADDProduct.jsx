@@ -10,13 +10,24 @@ const ADDProduct = () => {
     const [ProductDesc, SetProductDesc] = useState('');
     const [Producttype, SetProducttype] = useState('');
     const [ProductImage,SetProductImage] = useState([]);
-    const validationCheck = (e)=>{
+
+
+    const submitproduct = async(e)=>{
       e.preventDefault();
-      console.log(Producttitle);
-      console.log(ProductPrice);
-      console.log(Producttype);
-      console.log(ProductImage);
-      console.log(ProductDesc);
+      try {
+        const {data} = await axios.post(`${import.meta.env.VITE_Port}/addproducts`,{
+          producttitle:Producttitle,
+          productprice:ProductPrice,
+          productdesc:ProductDesc,
+          producttype:Producttype,
+          productimage:ProductImage
+        })
+        console.log(data);
+        alert("Product added successfully");
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const UpladImage = async(e)=>{
@@ -50,7 +61,7 @@ const ADDProduct = () => {
       </Backdrop>
      <ProdNav/>
      <div className='w-full flex justify-center items-center'  >
-        <form onSubmit={validationCheck}  className='w-[50%] bg-gray-900 rounded-md mt-[5rem] flex flex-col gap-[1rem] text-[1.5rem] p-[1rem] ' >
+        <form onSubmit={submitproduct}  className='w-[50%] bg-gray-900 rounded-md mt-[5rem] flex flex-col gap-[1rem] text-[1.5rem] p-[1rem] ' >
             <div className='w-full' >
                 <h1>Title</h1>
                 <input onChange={(e)=>{SetProducttitle(e.target.value)}} className='w-full p-[0.3rem] rounded-md bg-[#ffffff3b] text-white border-none focus:outline-none  '  type="text" required/>
@@ -83,9 +94,13 @@ const ADDProduct = () => {
             </div>
             <div className='w-full flex gap-[2rem] '>
                <h1>Product Image</h1>
-               <input onChange={UpladImage}   type="file" required/>
+               <input onChange={UpladImage}   type="file" />
             </div>
-              <button className='m-auto bg-black text-white px-[1rem] py-[0.5rem] rounded-md ' >Add the product</button>
+            <div className='w-full flex gap-[2rem] '>
+               <h1>Product Image</h1>
+               <input onChange={UpladImage}   type="file" />
+            </div>
+              <button className='m-auto cursor-pointer bg-black text-white px-[1rem] py-[0.5rem] rounded-md ' >Add the product</button>
         </form>
      </div>
     </>
