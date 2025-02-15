@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-const PandingOrders = () => {
+const CompleteOrders = () => {
     const [isLoading,SetIsLoading] = useState(true);
     const [PendingList,SetPendingList] = useState([])
 
@@ -24,8 +24,9 @@ const PandingOrders = () => {
 
         const pendingdata = async()=>{
         try {
-            const {data} = await axios.get(`${import.meta.env.VITE_Port}/pendingorders`);
+            const {data} = await axios.get(`${import.meta.env.VITE_Port}/complete`);
             SetPendingList(data.data);
+            console.log(data);
             SetIsLoading(false)
         } catch (error) {
             console.error(error)
@@ -35,9 +36,8 @@ const PandingOrders = () => {
     useEffect(() => {
      pendingdata();
     }, [])
-    
   return (
-    <>
+   <>
     {
         isLoading?<div className='text-[4rem] font-semibold flex justify-center items-center min-h-[60vh]'>
             <h1>Loading....</h1>
@@ -63,7 +63,7 @@ const PandingOrders = () => {
                     {
                 PendingList.map((i,index)=>{
                     return(
-                        <Datatable key={index} date={i.orderdate} id={i._id} customername={i.user.name} sn={index+1} total={i.total} payment={i.payment} address={i.address} status={"🟠Pending"}/>
+                        <Datatable key={index} date={i.orderdate} id={i._id} customername={i.user.name} sn={index+1} total={i.total} payment={i.payment} address={i.address} status={"🟢Completed"}/>
                     )
                 })
             }
@@ -76,4 +76,4 @@ const PandingOrders = () => {
   )
 }
 
-export default PandingOrders
+export default CompleteOrders
