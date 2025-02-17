@@ -1,12 +1,13 @@
 import React from 'react'
 import Navbar from "../Components/Navbar.jsx"
 import OrderNav from "../Components/OrderNav.jsx"
+import CancelledOrders from "../Components/CancelledOrders.jsx"
 const CancelledOrder = () => {
   return (
     <>
     <Navbar />
     <OrderNav />
-    <div>CancelledOrder</div>
+    <CancelledOrders/>
   </>
   )
 }

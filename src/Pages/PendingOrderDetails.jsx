@@ -4,11 +4,22 @@ import Navbar from '../Components/Navbar'
 import axios from 'axios';
 import Loading from '../Components/Loading';
 import { useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
 const PendingOrderDetails = () => {
     const naviagate = useNavigate();
     const Paramdata = useParams();
     const [Isloading,SetIsloading] = useState(true);
     const [Orderdata,SetOrderdata] = useState();
+    const [open, setOpen] = useState(false);
+    const [Cancelmessage,SetCancelmessage] = useState("");
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
 
     const getorderdetail = async(id)=>{
         try {
@@ -35,6 +46,20 @@ const PendingOrderDetails = () => {
             }
         }
 
+        const canceltheorder = async(e)=>{
+            e.preventDefault();
+            try {
+                const {data} = await axios.post(`${import.meta.env.VITE_Port}/cancelorder`,{
+                    id: Paramdata.id,
+                     cancelmessage : Cancelmessage
+                })
+                console.log(data);
+                naviagate("/");
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
 
 
 
@@ -50,7 +75,6 @@ const PendingOrderDetails = () => {
     {
         Isloading?<Loading/>:
         <div className='flex justify-between flex-wrap px-[2rem] mt-[5rem] items-baseline mb-[10rem] ' >   
-
             <div className='w-[40%] flex gap-[2rem] flex-col bg-gray-800 rounded-[1rem] p-[1rem] ' >
             <h1 className='text-[2.5rem] t text-red-500 ' >Product Info</h1>
                 <div className='flex flex-col gap-[2rem] ' >
@@ -94,13 +118,29 @@ const PendingOrderDetails = () => {
                     <h1 className='text-[2.5rem] text-red-500  text-center'>Order Action</h1>
                     <div className='flex justify-center items-center gap-[5rem]' >
                         <button className='px-[1rem] py-[0.5rem] text-[2rem] bg-green-600 rounded-md text-white hover:scale-[1.02] transition-all ' onClick={acceptorder}  >Accept Order</button>
-                        <button className='px-[1rem] py-[0.5rem] text-[2rem] bg-red-600 rounded-md text-white hover:scale-[1.02] transition-all ' >Cancel Order</button>
+                        <button className='px-[1rem] py-[0.5rem] text-[2rem] bg-red-600 rounded-md text-white hover:scale-[1.02] transition-all ' onClick={handleClickOpen} >Cancel Order</button>
                     </div>
                 </div>
            </div>
-
         </div>
     }
+
+        <Dialog
+        open={open}
+        fullWidth
+      >
+       <form className='bg-gray-800 !w-full p-[1rem] text-white gap-[2rem] flex flex-col ' >
+             <div className='text-[2rem] flex flex-col gap-[1rem]' >
+                <h1>Why You want to Cancel  the order ?</h1>
+                <textarea type="text" className='rounded-md w-full h-[15vh] text-black ' value={Cancelmessage} onChange={(e)=>SetCancelmessage(e.target.value)} required/>
+            </div>
+            <DialogActions className='flex gap-[2rem]' >
+            <button className='text-[2rem] text-red-500 ' onClick={handleClose}>Cancel</button>
+            <button className='text-[2rem] text-green-500 '  onClick={canceltheorder} >Submit</button>
+            </DialogActions>
+        </form>
+      </Dialog>
+
     </>
   )
 }
